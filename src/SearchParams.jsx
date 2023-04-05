@@ -1,7 +1,12 @@
 import { useState } from "react";
 
 const SearchParams = () => {
-  const [location, setLocation] = useState("");
+  // const [location, setLocation] = useState("");
+  // Lines 6-8 are equivalent to line 4.  These explain what is happening under the hood
+  const locationHook = useState("");
+  const location = locationHook[0];
+  const setLocation = locationHook[1];
+
   return (
     <div className="search-params">
       <form>
