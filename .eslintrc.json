@@ -36,5 +36,17 @@
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "files": ["server/**/*"],
+      "env": {
+        "node": true
+      },
+      "rules": {
+        "react/react-in-jsx-scope": "off",
+        "react/jsx-filename-extension": "off"
+      }
+    }
+  ]
 }
