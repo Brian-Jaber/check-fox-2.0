@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext",
+    "module": "CommonJS",
     "jsx": "react-jsx",
     "strict": true,
     "moduleResolution": "node",
@@ -14,6 +14,6 @@
     "noEmit": true,
     "lib": ["dom", "dom.iterable", "esnext"]
   },
-  "include": ["src", "vite.config.js"],
+  "include": ["src", "vite.config.js", "server"],
   "exclude": ["node_modules", "dist"]
 }
