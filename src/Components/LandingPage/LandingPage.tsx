@@ -8,8 +8,6 @@ const LandingPage: React.FC = () => {
       </header>
       <main className="landing-page__content">
         <p>A simple, secure, and easy to use MSBS customer tracking web app!</p>
-        <button className="landing-page__sign-in">Sign in</button>
-        <button className="Landing-page__sign-up">Sign up</button>
       </main>
     </div>
   );
