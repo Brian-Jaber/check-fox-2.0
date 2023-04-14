@@ -1,4 +1,6 @@
 import express, { Request, Response } from "express";
+import cors from "cors";
+import mysql from "mysql2/promise";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
