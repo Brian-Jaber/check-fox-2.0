@@ -1,16 +1,11 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
+//placing db import here but not used as of now, remove later
+import db from "./database/db";
 import mysql from "mysql2/promise";
 import dotenv from "dotenv";
 
 dotenv.config();
-
-const db = mysql.createPool({
-  host: "localhost",
-  user: "BERRYS",
-  password: process.env.MYSQL_PASSWORD,
-  database: "check_fox",
-});
 
 const app = express();
 const PORT = process.env.PORT || 3001;
