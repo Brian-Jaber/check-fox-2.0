@@ -5,6 +5,7 @@ import cors from "cors";
 import db from "./database/db";
 import mysql from "mysql2/promise";
 import dotenv from "dotenv";
+import authRouter from "./routes/authRoutes";
 
 dotenv.config();
 
@@ -13,6 +14,8 @@ const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+
+app.use("/auth", authRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express server is up and running!");

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { registerUser, loginUser } from "../../utilities/passwordUtils/index";
+import { registerUser } from "../../utilities/passwordUtils/index";
 
 export async function register(req: Request, res: Response) {
   const { email, first_name, last_name, password } = req.body;
