@@ -1,2 +1,2 @@
-import { Router, Request, Response } from "express";
-im;
+import express from "express";
+import authController from "../controllers/authController";
