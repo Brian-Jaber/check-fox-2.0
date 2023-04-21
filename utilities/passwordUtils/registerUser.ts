@@ -1,5 +1,5 @@
 import db from "../../server/database/db";
-import hashpassword from "./hashpassword";
+import hashPassword from "./hashpassword";
 
 async function registerUser(
   email: string,
@@ -8,9 +8,9 @@ async function registerUser(
   password: string
 ): Promise<void> {
   try {
-    const hashedPassword = await hashpassword(password);
+    const hashedPassword = await hashPassword(password);
     await db.query(
-      "INSERT INTO Users (email, first_name, last_name, password) VALUES (?,?,?,?)",
+      "INSERT INTO Users (email, first_name, last_name, hashed_password) VALUES (?,?,?,?)",
       [email, first_name, last_name, hashedPassword]
     );
 
