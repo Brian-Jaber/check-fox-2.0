@@ -2,8 +2,6 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 //placing db import here but not used as of now, remove later
 // CAN GET RID OF MYSQL BUT KEEPING FOR NOW IN CASE
-import db from "./database/db";
-import mysql from "mysql2/promise";
 import dotenv from "dotenv";
 import authRouter from "./routes/authRoutes";
 
