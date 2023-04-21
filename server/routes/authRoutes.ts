@@ -1,2 +1,8 @@
-import express from "express";
-import authController from "../controllers/authController";
+import { Router } from "express";
+import { register } from "../controllers/authController";
+
+const authRouter = Router();
+
+authRouter.post("/register", register);
+
+export default authRouter;
