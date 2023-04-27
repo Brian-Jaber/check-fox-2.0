@@ -1,6 +1,6 @@
 import db from "../../server/database/db";
 import hashPassword from "./hashpassword";
-import { SqlError } from "mysql2";
+import { SqlError } from "../customTypes";
 
 async function registerUser(
   email: string,
@@ -35,4 +35,4 @@ function isSqlError(error: unknown): error is SqlError {
   return (error as SqlError).code !== undefined;
 }
 
-export default registerUser;
+export { registerUser, isSqlError };
