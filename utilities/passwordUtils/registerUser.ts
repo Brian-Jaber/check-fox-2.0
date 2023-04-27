@@ -1,5 +1,6 @@
 import db from "../../server/database/db";
 import hashPassword from "./hashpassword";
+import { SqlError } from "../customTypes";
 
 async function registerUser(
   email: string,
@@ -13,11 +14,25 @@ async function registerUser(
       "INSERT INTO Users (email, first_name, last_name, hashed_password) VALUES (?,?,?,?)",
       [email, first_name, last_name, hashedPassword]
     );
-
-    console.log("User registered successfully.");
-  } catch (error) {
-    console.error("Error registering user: ", error);
+  } catch (error: unknown) {
+    if (isSqlError(error)) {
+      console.error("Error registering user: ", error);
+      throw error;
+    } else {
+      const genericError: SqlError = {
+        code: "UNKNOWN_ERROR",
+        message: "An unknown error occurred while registering the user.",
+        errno: -1,
+        sqlState: "",
+        sqlMessage: "",
+      };
+      throw genericError;
+    }
   }
 }
 
-export default registerUser;
+function isSqlError(error: unknown): error is SqlError {
+  return (error as SqlError).code !== undefined;
+}
+
+export { registerUser, isSqlError };
