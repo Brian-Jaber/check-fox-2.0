@@ -9,20 +9,27 @@ async function loginUser(email: string, password: string): Promise<boolean> {
     const [rows] = await db.query("SELECT * FROM Users WHERE email = ?", [
       email,
     ]);
-
     const userData = rows as RowDataPacket[];
-
+    console.log("hello");
     if (userData.length === 0) {
       console.log("User not found.");
       return false;
     }
-
+    console.log("hello 3");
     const user = userData[0];
-
+    if (!user.hashed_password) {
+      console.log("No hashed password found for user.");
+      return false;
+    }
     // Compare the provided password with the stored hashed password
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+    const isPasswordCorrect = await bcrypt.compare(
+      password,
+      user.hashed_password
+    );
 
     if (isPasswordCorrect) {
+      console.log("hello");
       console.log("User logged in successfully.");
       return true;
     } else {
