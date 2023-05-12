@@ -1,5 +1,3 @@
-import React from "react";
-
 const LandingPage: React.FC = () => {
   return (
     <div className="landing-page">
@@ -12,5 +10,3 @@ const LandingPage: React.FC = () => {
     </div>
   );
 };
-
-export default LandingPage;
