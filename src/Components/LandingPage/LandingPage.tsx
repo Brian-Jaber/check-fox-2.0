@@ -1,4 +1,5 @@
 import React from "react";
+import LoginSignUp from "../LoginSignup/LoginSignUp";
 
 const LandingPage: React.FC = () => {
   return (
@@ -8,6 +9,7 @@ const LandingPage: React.FC = () => {
       </header>
       <main className="landing-page__content">
         <p>To get started, either login or create an account</p>
+        <LoginSignUp />
       </main>
     </div>
   );
