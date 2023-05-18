@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { registerUser, isSqlError } from "../../utilities/passwordUtils/index";
+import {
+  registerUser,
+  isSqlError,
+  loginUser,
+} from "../../utilities/passwordUtils/index";
 
 export async function register(req: Request, res: Response) {
   const { email, first_name, last_name, password } = req.body;
@@ -14,5 +18,19 @@ export async function register(req: Request, res: Response) {
     } else {
       res.status(500).json({ message: "Error registering user.", error });
     }
+  }
+}
+
+export async function login(req: Request, res: Response) {
+  const { email, password } = req.body;
+  try {
+    const loggedIn = await loginUser(email, password);
+    if (loggedIn) {
+      res.status(200).json({ message: "User logged in successfully" });
+    } else {
+      res.status(401).json({ message: "Unauthorized access." });
+    }
+  } catch (error: unknown) {
+    res.status(500).json({ message: "Error logging in user.", error });
   }
 }
