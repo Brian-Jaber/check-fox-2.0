@@ -1,4 +1,5 @@
 import React from "react";
+import "../../stylesheets/loginsignup.css";
 
 const LoginSignUp: React.FC = () => {
   return (

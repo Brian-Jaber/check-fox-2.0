@@ -1,5 +1,6 @@
 import React from "react";
 import LoginSignUp from "../LoginSignup/LoginSignUp";
+import "../../stylesheets/landingpage.css";
 
 const LandingPage: React.FC = () => {
   return (
