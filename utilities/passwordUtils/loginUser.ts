@@ -3,6 +3,13 @@ import db from "../../server/database/db";
 import bcrypt from "bcrypt";
 import { RowDataPacket } from "mysql2/promise";
 
+class LoginError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "LoginError";
+  }
+}
+
 async function loginUser(email: string, password: string): Promise<boolean> {
   try {
     // Fetch user from the database by email
