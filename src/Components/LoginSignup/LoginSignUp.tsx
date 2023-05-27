@@ -2,18 +2,26 @@ import React, { useState } from "react";
 import "../../stylesheets/loginsignup.css";
 
 const LoginSignUp: React.FC = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
   };
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
 
-  const handleLogin = (event: React.FormEvent) => {
+  const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
+    const response = await fetch("http://localhost:3001/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+    console.log(email);
   };
 
   return (
@@ -21,8 +29,8 @@ const LoginSignUp: React.FC = () => {
       <input
         type="text"
         placeholder="Enter your Username"
-        value={username}
-        onChange={handleUsernameChange}
+        value={email}
+        onChange={handleEmailChange}
       />
       <input
         type="password"
