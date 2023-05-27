@@ -1,9 +1,9 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
-//placing db import here but not used as of now, remove later
-// CAN GET RID OF MYSQL BUT KEEPING FOR NOW IN CASE
 import dotenv from "dotenv";
 import authRouter from "./routes/authRoutes";
+
+import { LoginError } from "../utilities/passwordUtils/loginUser";
 
 dotenv.config();
 
@@ -18,6 +18,15 @@ app.use("/auth", authRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express server is up and running!");
+});
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  if (err instanceof LoginError) {
+    res.status(401).json({ message: err.message });
+  } else {
+    res.status(500).json({ message: "An unexpected error occurred" });
+  }
 });
 
 app.listen(PORT, () => {

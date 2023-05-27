@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import {
   registerUser,
   isSqlError,
@@ -21,16 +21,12 @@ export async function register(req: Request, res: Response) {
   }
 }
 
-export async function login(req: Request, res: Response) {
+export async function login(req: Request, res: Response, next: NextFunction) {
   const { email, password } = req.body;
   try {
-    const loggedIn = await loginUser(email, password);
-    if (loggedIn) {
-      res.status(200).json({ message: "User logged in successfully" });
-    } else {
-      res.status(401).json({ message: "Unauthorized access." });
-    }
+    await loginUser(email, password);
+    res.status(200).json({ message: "Login successful." });
   } catch (error: unknown) {
-    res.status(500).json({ message: "Error logging in user.", error });
+    next(error);
   }
 }
