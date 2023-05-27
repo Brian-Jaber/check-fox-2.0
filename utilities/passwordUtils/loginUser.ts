@@ -3,7 +3,7 @@ import db from "../../server/database/db";
 import bcrypt from "bcrypt";
 import { RowDataPacket } from "mysql2/promise";
 
-class LoginError extends Error {
+export class LoginError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "LoginError";
