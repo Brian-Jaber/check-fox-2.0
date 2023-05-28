@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
-import hashPassword from "../hashPassword";
+import hashPassword from "../../../utilities/passwordUtils/hashPassword";
 
 jest.mock("bcrypt", () => ({
-  hash: jest.fn(() => Promise.resolve("hashed_password")),
+  hash: jest.fn(() => Promise.resolve("hashedPassword")),
 }));
 
 describe("hashPassword", () => {
@@ -13,6 +13,6 @@ describe("hashPassword", () => {
     expect(bcrypt.hash as jest.Mock).toHaveBeenCalledWith(password, 10);
 
     expect(typeof result).toBe("string");
-    expect(result).toEqual("hashed_password");
+    expect(result).toEqual("hashedPassword");
   });
 });
