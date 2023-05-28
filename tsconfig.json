@@ -18,7 +18,9 @@
     "src",
     "vite.config.js",
     "server",
-    "utilities/passwordUtils/registerUserRoute.ts"
+    "utilities/passwordUtils/registerUserRoute.ts",
+    "__tests__/src/Components/LandingPage.test.tsx",
+    "__tests__/src/Components/Dashboard.test.tsx"
   ],
   "exclude": ["node_modules", "dist"]
 }
