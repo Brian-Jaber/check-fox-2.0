@@ -2,12 +2,20 @@ import {
   registerUser,
   isSqlError,
 } from "../../../utilities/passwordUtils/registerUser";
-
-import db from "../../../server/database/db";
-
+import * as db from "../../../server/database/db";
+import hashPassword from "../../../utilities/passwordUtils/hashPassword";
 // TODO: write tests for all cases of registerUser function
 // Mock Dependencies
+jest.mock("../../../server/database/db", () => ({
+  query: jest.fn(),
+}));
 
-//  Describe registerUser function
-// clear mocks before each test
-// delete newly created user after each test case
+jest.mock("../../../utilities/passwordUtils/hashPassword", () => ({
+  default: jest.fn(),
+}));
+
+describe("registerUser", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+});
