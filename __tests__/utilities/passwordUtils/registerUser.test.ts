@@ -18,4 +18,6 @@ describe("registerUser", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+
+  // TODO Finish writing afterEach once deleteUser testing and function are done
 });
