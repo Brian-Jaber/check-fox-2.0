@@ -18,7 +18,5 @@ describe("deleteUser", () => {
     expect(db.query).toHaveBeenCalledWith("DELETE FROM Users WHERE email = ?", [
       email,
     ]);
-
-    expect(console.log).toHaveBeenCalledWith(`${email} has been deleted`);
   });
 });

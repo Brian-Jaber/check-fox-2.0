@@ -10,11 +10,7 @@ jest.mock("../../../server/database/db", () => ({
   query: jest.fn(),
 }));
 
-jest.mock();
-
-jest.mock("../../../utilities/passwordUtils/hashPassword", () => ({
-  default: jest.fn(),
-}));
+jest.mock("../../../utilities/passwordUtils/hashPassword", () => jest.fn());
 
 describe("registerUser", () => {
   beforeEach(() => {
@@ -26,8 +22,18 @@ describe("registerUser", () => {
     const first_name = "john";
     const last_name = "doe";
     const password = "password";
+    const hashedPassword = "hashed_password";
+
+    (hashPassword as jest.Mock).mockReturnValue(hashedPassword);
 
     await registerUser(email, first_name, last_name, password);
+
+    expect(hashPassword).toHaveBeenCalledWith(password);
+
+    expect(db.query).toHaveBeenCalledWith(
+      "INSERT INTO Users (email, first_name, last_name, hashed_password) VALUES (?,?,?,?)",
+      [email, first_name, last_name, hashedPassword]
+    );
   });
   // TODO Finish writing afterEach once deleteUser testing and function are done
 });
