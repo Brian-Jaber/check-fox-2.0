@@ -1,7 +1,4 @@
-import {
-  registerUser,
-  isSqlError,
-} from "../../../utilities/passwordUtils/registerUser";
+import { registerUser } from "../../../utilities/passwordUtils/registerUser";
 import db from "../../../server/database/db";
 import hashPassword from "../../../utilities/passwordUtils/hashPassword";
 import { SqlError } from "../../../utilities/customTypes";
