@@ -3,7 +3,7 @@ import db from "../../server/database/db";
 import bcrypt from "bcrypt";
 import { RowDataPacket } from "mysql2/promise";
 
-export class LoginError extends Error {
+class LoginError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "LoginError";
@@ -35,4 +35,4 @@ async function loginUser(email: string, password: string): Promise<void> {
   }
 }
 
-export default loginUser;
+export { LoginError, loginUser };
