@@ -12,11 +12,15 @@ class LoginError extends Error {
 
 async function loginUser(email: string, password: string): Promise<void> {
   // Fetch user from the database by email
+  if (email === "" || password === "") {
+    throw new LoginError("Please enter login credentials.");
+  }
+
   const [rows] = await db.query("SELECT * FROM Users WHERE email = ?", [email]);
   const userData = rows as RowDataPacket[];
 
   if (userData.length === 0) {
-    throw new LoginError("No characters entered.");
+    throw new LoginError("No user found with this email.");
   }
 
   const user = userData[0];
