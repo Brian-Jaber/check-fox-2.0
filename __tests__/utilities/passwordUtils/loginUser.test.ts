@@ -26,7 +26,7 @@ describe("loginUser", () => {
 
     await expect(loginUser(email, password)).rejects.toThrow(LoginError);
   });
-  // Not sure if test on line 23 is really necessary to be honest, at this point I am starting to enjoy testing
+
   test.todo(
     "It should throw an error if a user does not have a hashed password"
   );
