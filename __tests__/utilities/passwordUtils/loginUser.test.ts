@@ -21,36 +21,35 @@ describe("loginUser", () => {
     jest.clearAllMocks;
   });
 
-  it("Should throw a LoginError when password field is empty.", async () => {
+  it("Should throw a LoginError when email field is empty.", async () => {
     // set conditions for our test
     // TODO necessity of RowDataPacket.  userData[0], forgot what this means and need to dig into that a bit
-    const email = "test.email@gmail.com";
-    const password = "asdfasdfasdf";
-
-    await expect(loginUser(email, password)).rejects.toThrow(LoginError);
-  });
-
-  it("Should throw a LoginError if email field is empty.", async () => {
-    const email = "sdfsdf";
+    const email = "";
     const password = "password";
 
-    await expect(loginUser(email, password)).rejects.toThrow(LoginError);
+    await expect(loginUser(email, password)).rejects.toThrow(
+      new LoginError("Please enter email.")
+    );
   });
 
-  it("Should throw a LoginError if email and password fields are emptied.", async () => {
-    const email = "";
+  it("Should throw a LoginError if password field is empty.", async () => {
+    const email = "test.email@gmail.com";
     const password = "";
 
-    await expect(loginUser(email, password)).rejects.toThrow(LoginError);
+    await expect(loginUser(email, password)).rejects.toThrow(
+      new LoginError("Please enter password.")
+    );
   });
 
   it("Should throw an errror if incorrectly formatted email.", async () => {
-    const email = "test.emailgmail";
-    const password = "sdfsdfsdfsdfsdf";
+    const email = "test.email@gmail.com";
+    const password = "password";
 
     (isEmail as jest.Mock).mockReturnValue(false);
 
-    await expect(loginUser(email, password)).rejects.toThrow(LoginError);
+    await expect(loginUser(email, password)).rejects.toThrow(
+      new LoginError("Invalid email format.")
+    );
   });
 
   test.todo(
