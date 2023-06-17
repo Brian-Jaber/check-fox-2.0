@@ -4,6 +4,7 @@ import {
 } from "../../../utilities/passwordUtils/loginUser";
 import bcrypt from "bcrypt";
 import db from "../../../server/database/db";
+import isEmail from "validator/lib/isEmail";
 
 jest.mock("../../../server/database/db", () => ({
   query: jest.fn(),
@@ -13,16 +14,41 @@ jest.mock("bcrypt", () => ({
   compare: jest.fn(),
 }));
 
+jest.mock("validator/lib/isEmail", () => jest.fn());
+
 describe("loginUser", () => {
   beforeEach(() => {
     jest.clearAllMocks;
   });
 
-  it("It should throw a LoginError if no characters are entered", async () => {
+  it("Should throw a LoginError when password field is empty.", async () => {
     // set conditions for our test
     // TODO necessity of RowDataPacket.  userData[0], forgot what this means and need to dig into that a bit
-    const email = "test.email@gmail.com";
-    const password = "";
+    const email = "";
+    const password = "password";
+
+    await expect(loginUser(email, password)).rejects.toThrow(LoginError);
+  });
+
+  // it("Should throw a LoginError if email field is empty.", async () => {
+  //   const email = "sdfsdf";
+  //   const password = "password";
+
+  //   await expect(loginUser(email, password)).rejects.toThrow(LoginError);
+  // });
+
+  // it("Should throw a LoginError if email and password fields are emptied.", async () => {
+  //   const email = "";
+  //   const password = "";
+
+  //   await expect(loginUser(email, password)).rejects.toThrow(LoginError);
+  // });
+
+  it("Should throw an errror if incorrectly formatted email.", async () => {
+    const email = "test.emailgmail";
+    const password = "sdfsdfsdfsdfsdf";
+
+    (isEmail as jest.Mock).mockReturnValue(false);
 
     await expect(loginUser(email, password)).rejects.toThrow(LoginError);
   });

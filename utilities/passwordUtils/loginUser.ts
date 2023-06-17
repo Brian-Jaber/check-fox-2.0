@@ -13,8 +13,8 @@ class LoginError extends Error {
 
 async function loginUser(email: string, password: string): Promise<void> {
   // Fetch user from the database by email
-  if (email === "" || password === "") {
-    throw new LoginError("Please enter login credentials.");
+  if (email === "") {
+    throw new LoginError("Please enter Email.");
   }
 
   if (!isEmail(email)) {
