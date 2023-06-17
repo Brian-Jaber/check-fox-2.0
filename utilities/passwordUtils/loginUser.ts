@@ -2,6 +2,7 @@
 import db from "../../server/database/db";
 import bcrypt from "bcrypt";
 import { RowDataPacket } from "mysql2/promise";
+import isEmail from "validator/lib/isEmail";
 
 class LoginError extends Error {
   constructor(message: string) {
@@ -13,7 +14,11 @@ class LoginError extends Error {
 async function loginUser(email: string, password: string): Promise<void> {
   // Fetch user from the database by email
   if (email === "" || password === "") {
-    throw new LoginError("Please enter login credentials.");
+    throw new LoginError("Please enter Email.");
+  }
+
+  if (!isEmail(email)) {
+    throw new LoginError("Invalid email format.");
   }
 
   const [rows] = await db.query("SELECT * FROM Users WHERE email = ?", [email]);
