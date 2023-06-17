@@ -24,25 +24,25 @@ describe("loginUser", () => {
   it("Should throw a LoginError when password field is empty.", async () => {
     // set conditions for our test
     // TODO necessity of RowDataPacket.  userData[0], forgot what this means and need to dig into that a bit
-    const email = "";
+    const email = "test.email@gmail.com";
+    const password = "asdfasdfasdf";
+
+    await expect(loginUser(email, password)).rejects.toThrow(LoginError);
+  });
+
+  it("Should throw a LoginError if email field is empty.", async () => {
+    const email = "sdfsdf";
     const password = "password";
 
     await expect(loginUser(email, password)).rejects.toThrow(LoginError);
   });
 
-  // it("Should throw a LoginError if email field is empty.", async () => {
-  //   const email = "sdfsdf";
-  //   const password = "password";
+  it("Should throw a LoginError if email and password fields are emptied.", async () => {
+    const email = "";
+    const password = "";
 
-  //   await expect(loginUser(email, password)).rejects.toThrow(LoginError);
-  // });
-
-  // it("Should throw a LoginError if email and password fields are emptied.", async () => {
-  //   const email = "";
-  //   const password = "";
-
-  //   await expect(loginUser(email, password)).rejects.toThrow(LoginError);
-  // });
+    await expect(loginUser(email, password)).rejects.toThrow(LoginError);
+  });
 
   it("Should throw an errror if incorrectly formatted email.", async () => {
     const email = "test.emailgmail";
