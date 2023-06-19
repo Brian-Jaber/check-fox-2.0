@@ -52,9 +52,25 @@ describe("loginUser", () => {
     );
   });
 
-  test.todo(
-    "It should throw an error if a user does not have a hashed password"
-  );
+  it("It should throw an error if a user does not have a hashed password", async () => {
+    const email = "test.email@gmail.com";
+    const password = "password";
+
+    (isEmail as jest.Mock).mockReturnValue(true);
+
+    (db.query as jest.Mock).mockResolvedValue([
+      [
+        {
+          email,
+          hashed_password: null,
+        },
+      ],
+    ]);
+
+    await expect(loginUser(email, password)).rejects.toThrow(
+      new LoginError("No hash found for user.")
+    );
+  });
 
   test.todo("It should throw an error if the password entered is incorrect");
 
