@@ -12,9 +12,8 @@ class LoginError extends Error {
 }
 
 async function loginUser(email: string, password: string): Promise<void> {
-  // Fetch user from the database by email
+  // Fetch user from the database by emai
   if (email === "") {
-    console.log(email);
     throw new LoginError("Please enter email.");
   }
   if (password === "") {
@@ -36,7 +35,6 @@ async function loginUser(email: string, password: string): Promise<void> {
   if (!user.hashed_password) {
     throw new LoginError("No hash found for user.");
   }
-  // Compare the provided password with the stored hashed password
 
   const isPasswordCorrect = await bcrypt.compare(
     password,
