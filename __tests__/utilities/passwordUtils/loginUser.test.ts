@@ -17,15 +17,18 @@ jest.mock("bcrypt", () => ({
 jest.mock("validator/lib/isEmail", () => jest.fn());
 
 describe("loginUser", () => {
+  let email: string;
+  let password: string;
+
   beforeEach(() => {
-    jest.clearAllMocks;
+    email = "test@test.com";
+    password = "password";
+
+    jest.clearAllMocks();
   });
 
   it("Should throw a LoginError when email field is empty.", async () => {
-    // set conditions for our test
-    // TODO necessity of RowDataPacket.  userData[0], forgot what this means and need to dig into that a bit
-    const email = "";
-    const password = "password";
+    email = "";
 
     await expect(loginUser(email, password)).rejects.toThrow(
       new LoginError("Please enter email.")
@@ -33,7 +36,6 @@ describe("loginUser", () => {
   });
 
   it("Should throw a LoginError if password field is empty.", async () => {
-    const email = "test.email@gmail.com";
     const password = "";
 
     await expect(loginUser(email, password)).rejects.toThrow(
@@ -42,9 +44,6 @@ describe("loginUser", () => {
   });
 
   it("Should throw an errror if incorrectly formatted email.", async () => {
-    const email = "test.email@gmail.com";
-    const password = "password";
-
     (isEmail as jest.Mock).mockReturnValue(false);
 
     await expect(loginUser(email, password)).rejects.toThrow(
@@ -53,9 +52,6 @@ describe("loginUser", () => {
   });
 
   it("It should throw an error if a user does not have a hashed password", async () => {
-    const email = "test.email@gmail.com";
-    const password = "password";
-
     (isEmail as jest.Mock).mockReturnValue(true);
 
     (db.query as jest.Mock).mockResolvedValue([
@@ -72,7 +68,22 @@ describe("loginUser", () => {
     );
   });
 
-  test.todo("It should throw an error if the password entered is incorrect");
+  it("Should throw an error if the password entered is incorrect.", async () => {
+    (db.query as jest.Mock).mockResolvedValue([
+      [
+        {
+          email,
+          hashed_password: "hashed_password",
+        },
+      ],
+    ]);
+
+    (bcrypt.compare as jest.Mock).mockResolvedValue(false);
+
+    await expect(loginUser(email, password)).rejects.toThrow(
+      new LoginError("Incorrect password.")
+    );
+  });
 
   test.todo("It should return true if the entered password is correct");
 });
