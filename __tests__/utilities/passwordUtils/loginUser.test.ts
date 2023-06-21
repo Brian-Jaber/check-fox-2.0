@@ -17,13 +17,16 @@ jest.mock("bcrypt", () => ({
 jest.mock("validator/lib/isEmail", () => jest.fn());
 
 describe("loginUser", () => {
+  let email: string;
+  let password: string;
+
   beforeEach(() => {
+    email = "test@test.com";
+
     jest.clearAllMocks();
   });
 
   it("Should throw a LoginError when email field is empty.", async () => {
-    // set conditions for our test
-    // TODO necessity of RowDataPacket.  userData[0], forgot what this means and need to dig into that a bit
     const email = "";
     const password = "password";
 
