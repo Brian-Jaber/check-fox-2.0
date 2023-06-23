@@ -85,5 +85,18 @@ describe("loginUser", () => {
     );
   });
 
-  test.todo("It should return true if the entered password is correct");
+  it("Should return true if the entered password is correct", async () => {
+    (db.query as jest.Mock).mockResolvedValue([
+      [
+        {
+          email,
+          hashed_password: "hashed_password",
+        },
+      ],
+    ]);
+
+    (bcrypt.compare as jest.Mock).mockResolvedValue(true);
+
+    await expect(loginUser(email,password)).
+  });
 });

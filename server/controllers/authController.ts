@@ -22,6 +22,8 @@ export async function register(req: Request, res: Response) {
 }
 
 export async function login(req: Request, res: Response, next: NextFunction) {
+  // TODO: SESSION MANAGEMENT
+
   const { email, password } = req.body;
   try {
     await loginUser(email, password);
