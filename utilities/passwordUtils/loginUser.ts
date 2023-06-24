@@ -3,6 +3,7 @@ import db from "../../server/database/db";
 import bcrypt from "bcrypt";
 import { RowDataPacket } from "mysql2/promise";
 import isEmail from "validator/lib/isEmail";
+import { User } from "../../Types/userTypes";
 
 class LoginError extends Error {
   constructor(message: string) {
@@ -11,7 +12,10 @@ class LoginError extends Error {
   }
 }
 
-async function loginUser(email: string, password: string): Promise<void> {
+async function loginUser(
+  email: string,
+  password: string
+): Promise<RowDataPacket> {
   // Fetch user from the database by emai
   if (email === "") {
     throw new LoginError("Please enter email.");
@@ -31,7 +35,7 @@ async function loginUser(email: string, password: string): Promise<void> {
   }
 
   const user = userData[0];
-
+  console.log(userData[0]);
   if (!user.hashed_password) {
     throw new LoginError("No hash found for user.");
   }
@@ -43,6 +47,8 @@ async function loginUser(email: string, password: string): Promise<void> {
   if (!isPasswordCorrect) {
     throw new LoginError("Incorrect password.");
   }
+
+  return user;
 }
 
 export { LoginError, loginUser };
