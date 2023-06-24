@@ -5,6 +5,8 @@ import {
 import bcrypt from "bcrypt";
 import db from "../../../server/database/db";
 import isEmail from "validator/lib/isEmail";
+import { RowDataPacket } from "mysql2/promise";
+import { User } from "../../../Types/userTypes";
 
 jest.mock("../../../server/database/db", () => ({
   query: jest.fn(),
@@ -97,6 +99,6 @@ describe("loginUser", () => {
 
     (bcrypt.compare as jest.Mock).mockResolvedValue(true);
 
-    await expect(loginUser(email,password)).
+    const result = await loginUser(email, password);
   });
 });
