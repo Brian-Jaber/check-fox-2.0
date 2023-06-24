@@ -1,7 +1,7 @@
 import { registerUser } from "../../../utilities/passwordUtils/registerUser";
 import db from "../../../server/database/db";
 import hashPassword from "../../../utilities/passwordUtils/hashPassword";
-import { SqlError } from "../../../utilities/customTypes";
+import { SqlError } from "../../../Types/customTypes";
 // TODO: write tests for all cases of registerUser function
 // Mock Dependencies
 jest.mock("../../../server/database/db", () => ({

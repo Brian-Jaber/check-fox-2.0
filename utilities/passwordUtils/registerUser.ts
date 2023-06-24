@@ -1,6 +1,6 @@
 import db from "../../server/database/db";
 import hashPassword from "./hashPassword";
-import { SqlError } from "../customTypes";
+import { SqlError } from "../../Types/customTypes";
 
 async function registerUser(
   email: string,
