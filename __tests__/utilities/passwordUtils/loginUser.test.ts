@@ -87,7 +87,7 @@ describe("loginUser", () => {
     );
   });
 
-  it("Should return true if the entered password is correct", async () => {
+  it("Should return usern data f if the entered password is correct", async () => {
     (db.query as jest.Mock).mockResolvedValue([
       [
         {
@@ -98,6 +98,10 @@ describe("loginUser", () => {
     ]);
 
     (bcrypt.compare as jest.Mock).mockResolvedValue(true);
+
+    //TODO
+    //  create a mockUser opject
+    //  check to that result is the same value as the mocked object
 
     const result = await loginUser(email, password);
   });
