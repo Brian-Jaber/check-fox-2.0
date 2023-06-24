@@ -5,8 +5,6 @@ import {
 import bcrypt from "bcrypt";
 import db from "../../../server/database/db";
 import isEmail from "validator/lib/isEmail";
-import { RowDataPacket } from "mysql2/promise";
-import { User } from "../../../Types/userTypes";
 
 jest.mock("../../../server/database/db", () => ({
   query: jest.fn(),
@@ -88,21 +86,15 @@ describe("loginUser", () => {
   });
 
   it("Should return usern data f if the entered password is correct", async () => {
-    (db.query as jest.Mock).mockResolvedValue([
-      [
-        {
-          email,
-          hashed_password: "hashed_password",
-        },
-      ],
-    ]);
+    const mockUser = {
+      email,
+      hashed_password: "hashed_password",
+    };
 
+    (db.query as jest.Mock).mockResolvedValue([[mockUser]]);
     (bcrypt.compare as jest.Mock).mockResolvedValue(true);
 
-    //TODO
-    //  create a mockUser opject
-    //  check to that result is the same value as the mocked object
-
     const result = await loginUser(email, password);
+    expect(result).toMatchObject(mockUser);
   });
 });
