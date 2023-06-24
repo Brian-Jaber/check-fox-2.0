@@ -5,8 +5,6 @@ import {
 import bcrypt from "bcrypt";
 import db from "../../../server/database/db";
 import isEmail from "validator/lib/isEmail";
-import { RowDataPacket } from "mysql2/promise";
-import { User } from "../../../Types/userTypes";
 
 jest.mock("../../../server/database/db", () => ({
   query: jest.fn(),
@@ -87,18 +85,16 @@ describe("loginUser", () => {
     );
   });
 
-  it("Should return true if the entered password is correct", async () => {
-    (db.query as jest.Mock).mockResolvedValue([
-      [
-        {
-          email,
-          hashed_password: "hashed_password",
-        },
-      ],
-    ]);
+  it("Should return usern data f if the entered password is correct", async () => {
+    const mockUser = {
+      email,
+      hashed_password: "hashed_password",
+    };
 
+    (db.query as jest.Mock).mockResolvedValue([[mockUser]]);
     (bcrypt.compare as jest.Mock).mockResolvedValue(true);
 
     const result = await loginUser(email, password);
+    expect(result).toMatchObject(mockUser);
   });
 });
