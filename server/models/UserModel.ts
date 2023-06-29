@@ -2,12 +2,17 @@ import bcrypt from "bcrypt";
 import db from "../database/db";
 import { RowDataPacket } from "mysql2/promise";
 import isEmail from "validator/lib/isEmail";
+import { SqlError } from "../../Types/customTypes";
 
 class LoginError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "LoginError";
   }
+}
+
+function isSqlError(error: unknown): error is SqlError {
+  return (error as SqlError).code !== undefined;
 }
 
 class User {
@@ -56,6 +61,35 @@ class User {
     }
 
     return user;
+  };
+
+  static registerUser: (
+    email: string,
+    first_name: string,
+    last_name: string,
+    password: string
+  ) => Promise<void> = async (email, first_name, last_name, password) => {
+    try {
+      const hashedPassword = await User.hashPassword(password);
+      await db.query(
+        "INSERT INTO Users (email, first_name, last_name, hashed_password) VALUES (?,?,?,?)",
+        [email, first_name, last_name, hashedPassword]
+      );
+    } catch (error: unknown) {
+      if (isSqlError(error)) {
+        console.error("Error registering user: ", error);
+        throw error;
+      } else {
+        const genericError: SqlError = {
+          code: "UNKNOWN_ERROR",
+          message: "An unknown error occurred while registering the user.",
+          errno: -1,
+          sqlState: "",
+          sqlMessage: "",
+        };
+        throw genericError;
+      }
+    }
   };
 }
 
