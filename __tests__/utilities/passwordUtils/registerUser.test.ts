@@ -7,19 +7,6 @@ jest.mock("../../../server/database/db", () => ({
   query: jest.fn(),
 }));
 
-jest.mock("../../../server/models/UserModel", () => {
-  const actualUserModel = jest.requireActual(
-    "../../../server/models/UserModel"
-  );
-  return {
-    __esModule: true,
-    default: {
-      ...actualUserModel.default,
-      hashPassword: jest.fn(),
-    },
-  };
-});
-
 describe("registerUser", () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -30,10 +17,11 @@ describe("registerUser", () => {
     const first_name = "john";
     const last_name = "doe";
     const password = "password";
+    const hashedPassword = "hashed_password";
 
-    (User.hashPassword as jest.Mock).mockResolvedValue("hashedPassword");
-
-    const hashedPassword = await User.hashPassword(password);
+    jest
+      .spyOn(User, "hashPassword")
+      .mockResolvedValue(Promise.resolve(hashedPassword));
 
     // const hashedPassword = await User.hashPassword(password);
     // (User.hashPassword as jest.Mock).mockResolvedValue(hashedPassword)
