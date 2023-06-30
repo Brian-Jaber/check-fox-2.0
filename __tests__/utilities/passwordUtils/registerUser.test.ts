@@ -28,9 +28,10 @@ describe("registerUser", () => {
     const hashedPassword = "hashed_password";
 
     (User.hashPassword as jest.Mock).mockResolvedValue(hashedPassword);
-    console.log(hashedPassword);
 
     await User.registerUser(email, first_name, last_name, password);
+
+    console.log("hello world");
 
     expect(User.hashPassword).toHaveBeenCalledWith(password);
 
