@@ -7,13 +7,18 @@ jest.mock("../../../server/database/db", () => ({
   query: jest.fn(),
 }));
 
-jest.mock("../../../server/models/UserModel", () => ({
-  __esModule: true,
-  default: {
-    hashPassword: jest.fn(),
-    registerUser: jest.fn(),
-  },
-}));
+jest.mock("../../../server/models/UserModel", () => {
+  const actualUserModel = jest.requireActual(
+    "../../../server/models/UserModel"
+  );
+  return {
+    __esModule: true,
+    default: {
+      ...actualUserModel.default,
+      hashPassword: jest.fn(),
+    },
+  };
+});
 
 describe("registerUser", () => {
   beforeEach(() => {
@@ -30,8 +35,6 @@ describe("registerUser", () => {
     (User.hashPassword as jest.Mock).mockResolvedValue(hashedPassword);
 
     await User.registerUser(email, first_name, last_name, password);
-
-    console.log("hello world");
 
     expect(User.hashPassword).toHaveBeenCalledWith(password);
 
