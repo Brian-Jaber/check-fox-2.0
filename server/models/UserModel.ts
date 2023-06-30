@@ -16,7 +16,7 @@ function isSqlError(error: unknown): error is SqlError {
 }
 
 class User {
-  static hashPassword: (password: string) => Promise<string> = async (
+  public static hashPassword: (password: string) => Promise<string> = async (
     password: string
   ) => {
     const saltRounds = 10;
@@ -71,6 +71,7 @@ class User {
   ) => Promise<void> = async (email, first_name, last_name, password) => {
     try {
       const hashedPassword = await User.hashPassword(password);
+      console.log("hello from UserModel");
       await db.query(
         "INSERT INTO Users (email, first_name, last_name, hashed_password) VALUES (?,?,?,?)",
         [email, first_name, last_name, hashedPassword]

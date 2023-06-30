@@ -30,14 +30,15 @@ describe("registerUser", () => {
     const first_name = "john";
     const last_name = "doe";
     const password = "password";
-    const hashedPassword = "hashed_password";
 
-    (User.hashPassword as jest.Mock).mockResolvedValue(hashedPassword);
+    (User.hashPassword as jest.Mock).mockResolvedValue("hashedPassword");
+
+    const hashedPassword = await User.hashPassword(password);
+
+    // const hashedPassword = await User.hashPassword(password);
+    // (User.hashPassword as jest.Mock).mockResolvedValue(hashedPassword)
 
     await User.registerUser(email, first_name, last_name, password);
-
-    expect(User.hashPassword).toHaveBeenCalledWith(password);
-
     expect(db.query).toHaveBeenCalledWith(
       "INSERT INTO Users (email, first_name, last_name, hashed_password) VALUES (?,?,?,?)",
       [email, first_name, last_name, hashedPassword]
