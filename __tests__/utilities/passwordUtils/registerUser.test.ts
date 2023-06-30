@@ -1,6 +1,5 @@
-import { registerUser } from "../../../utilities/passwordUtils/registerUser";
 import db from "../../../server/database/db";
-import hashPassword from "../../../utilities/passwordUtils/hashPassword";
+import User from "../../../server/models/UserModel";
 import { SqlError } from "../../../Types/customTypes";
 // TODO: write tests for all cases of registerUser function
 // Mock Dependencies
@@ -8,7 +7,13 @@ jest.mock("../../../server/database/db", () => ({
   query: jest.fn(),
 }));
 
-jest.mock("../../../utilities/passwordUtils/hashPassword", () => jest.fn());
+jest.mock("../../../server/models/UserModel", () => ({
+  __esModule: true,
+  default: {
+    hashPassword: jest.fn(),
+    registerUser: jest.fn(),
+  },
+}));
 
 describe("registerUser", () => {
   beforeEach(() => {
@@ -22,11 +27,12 @@ describe("registerUser", () => {
     const password = "password";
     const hashedPassword = "hashed_password";
 
-    (hashPassword as jest.Mock).mockReturnValue(hashedPassword);
+    (User.hashPassword as jest.Mock).mockResolvedValue(hashedPassword);
+    console.log(hashedPassword);
 
-    await registerUser(email, first_name, last_name, password);
+    await User.registerUser(email, first_name, last_name, password);
 
-    expect(hashPassword).toHaveBeenCalledWith(password);
+    expect(User.hashPassword).toHaveBeenCalledWith(password);
 
     expect(db.query).toHaveBeenCalledWith(
       "INSERT INTO Users (email, first_name, last_name, hashed_password) VALUES (?,?,?,?)",
@@ -48,7 +54,7 @@ describe("registerUser", () => {
       sqlMessage: "Error",
     };
 
-    (hashPassword as jest.Mock).mockReturnValue(
+    (User.hashPassword as jest.Mock).mockReturnValue(
       Promise.resolve(hashedPassword)
     );
 
@@ -57,7 +63,7 @@ describe("registerUser", () => {
     const consoleSpy = jest.spyOn(console, "error");
 
     try {
-      await registerUser(email, first_name, last_name, password);
+      await User.registerUser(email, first_name, last_name, password);
     } catch (error) {
       expect(error).toBe(sqlError);
     }
@@ -75,7 +81,7 @@ describe("registerUser", () => {
     const password = "password";
     const hashedPassword = "hashed_password";
 
-    (hashPassword as jest.Mock).mockReturnValue(
+    (User.hashPassword as jest.Mock).mockReturnValue(
       Promise.resolve(hashedPassword)
     );
 
@@ -84,7 +90,7 @@ describe("registerUser", () => {
     });
 
     try {
-      await registerUser(email, first_name, last_name, password);
+      await User.registerUser(email, first_name, last_name, password);
     } catch (error) {
       expect(error).toEqual({
         code: "UNKNOWN_ERROR",
