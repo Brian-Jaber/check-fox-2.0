@@ -1,10 +1,8 @@
-import {
-  loginUser,
-  LoginError,
-} from "../../../utilities/passwordUtils/loginUser";
+import { LoginError } from "../../../Types/customTypes";
 import bcrypt from "bcrypt";
 import db from "../../../server/database/db";
 import isEmail from "validator/lib/isEmail";
+import User from "../../../server/models/UserModel";
 
 jest.mock("../../../server/database/db", () => ({
   query: jest.fn(),
@@ -30,7 +28,7 @@ describe("loginUser", () => {
   it("Should throw a LoginError when email field is empty.", async () => {
     email = "";
 
-    await expect(loginUser(email, password)).rejects.toThrow(
+    await expect(User.loginUser(email, password)).rejects.toThrow(
       new LoginError("Please enter email.")
     );
   });
@@ -38,7 +36,7 @@ describe("loginUser", () => {
   it("Should throw a LoginError if password field is empty.", async () => {
     const password = "";
 
-    await expect(loginUser(email, password)).rejects.toThrow(
+    await expect(User.loginUser(email, password)).rejects.toThrow(
       new LoginError("Please enter password.")
     );
   });
@@ -46,7 +44,7 @@ describe("loginUser", () => {
   it("Should throw an errror if incorrectly formatted email.", async () => {
     (isEmail as jest.Mock).mockReturnValue(false);
 
-    await expect(loginUser(email, password)).rejects.toThrow(
+    await expect(User.loginUser(email, password)).rejects.toThrow(
       new LoginError("Invalid email format.")
     );
   });
@@ -63,7 +61,7 @@ describe("loginUser", () => {
       ],
     ]);
 
-    await expect(loginUser(email, password)).rejects.toThrow(
+    await expect(User.loginUser(email, password)).rejects.toThrow(
       new LoginError("No hash found for user.")
     );
   });
@@ -80,7 +78,7 @@ describe("loginUser", () => {
 
     (bcrypt.compare as jest.Mock).mockResolvedValue(false);
 
-    await expect(loginUser(email, password)).rejects.toThrow(
+    await expect(User.loginUser(email, password)).rejects.toThrow(
       new LoginError("Incorrect password.")
     );
   });
@@ -94,7 +92,7 @@ describe("loginUser", () => {
     (db.query as jest.Mock).mockResolvedValue([[mockUser]]);
     (bcrypt.compare as jest.Mock).mockResolvedValue(true);
 
-    const result = await loginUser(email, password);
+    const result = await User.loginUser(email, password);
     expect(result).toMatchObject(mockUser);
   });
 });

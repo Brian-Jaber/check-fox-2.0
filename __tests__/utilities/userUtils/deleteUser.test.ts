@@ -1,5 +1,5 @@
 import db from "../../../server/database/db";
-import deleteUser from "../../../utilities/userUtils/deleteUser";
+import User from "../../../server/models/UserModel";
 
 jest.mock("../../../server/database/db", () => ({
   query: jest.fn(),
@@ -13,7 +13,7 @@ describe("deleteUser", () => {
   it("should call db.query with the correct query and email and log the deletion", async () => {
     const email = "test.email@gmail.com";
 
-    await deleteUser(email);
+    await User.deleteUser(email);
 
     expect(db.query).toHaveBeenCalledWith("DELETE FROM Users WHERE email = ?", [
       email,
