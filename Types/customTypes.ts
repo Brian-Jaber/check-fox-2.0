@@ -12,3 +12,7 @@ export class LoginError extends Error {
     this.name = "LoginError";
   }
 }
+
+export function isSqlError(error: unknown): error is SqlError {
+  return (error as SqlError).code !== undefined;
+}

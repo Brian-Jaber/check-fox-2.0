@@ -1,14 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import {
-  registerUser,
-  isSqlError,
-  loginUser,
-} from "../../utilities/passwordUtils/index";
+import User from "../models/UserModel";
+import { isSqlError } from "../../Types/customTypes";
 
 export async function register(req: Request, res: Response) {
   const { email, first_name, last_name, password } = req.body;
   try {
-    await registerUser(email, first_name, last_name, password);
+    await User.registerUser(email, first_name, last_name, password);
     res.status(201).json({ message: "User registered successfully" });
   } catch (error: unknown) {
     if (isSqlError(error) && error.code === "ER_DUP_ENTRY") {
@@ -26,7 +23,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
 
   const { email, password } = req.body;
   try {
-    await loginUser(email, password);
+    await User.loginUser(email, password);
     res.status(200).json({ message: "Login successful." });
   } catch (error: unknown) {
     next(error);

@@ -2,18 +2,7 @@ import bcrypt from "bcrypt";
 import db from "../database/db";
 import { RowDataPacket } from "mysql2/promise";
 import isEmail from "validator/lib/isEmail";
-import { SqlError } from "../../Types/customTypes";
-
-class LoginError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "LoginError";
-  }
-}
-
-function isSqlError(error: unknown): error is SqlError {
-  return (error as SqlError).code !== undefined;
-}
+import { isSqlError, SqlError, LoginError } from "../../Types/customTypes";
 
 class User {
   public static hashPassword: (password: string) => Promise<string> = async (
@@ -71,7 +60,6 @@ class User {
   ) => Promise<void> = async (email, first_name, last_name, password) => {
     try {
       const hashedPassword = await User.hashPassword(password);
-      console.log("hello from UserModel");
       await db.query(
         "INSERT INTO Users (email, first_name, last_name, hashed_password) VALUES (?,?,?,?)",
         [email, first_name, last_name, hashedPassword]
@@ -91,6 +79,11 @@ class User {
         throw genericError;
       }
     }
+  };
+
+  static deleteUser: (email: string) => Promise<void> = async (email) => {
+    await db.query("DELETE FROM Users WHERE email = ?", [email]);
+    console.log(`${email} has been deleted`);
   };
 }
 
