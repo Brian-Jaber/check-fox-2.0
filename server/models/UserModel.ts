@@ -2,18 +2,7 @@ import bcrypt from "bcrypt";
 import db from "../database/db";
 import { RowDataPacket } from "mysql2/promise";
 import isEmail from "validator/lib/isEmail";
-import { SqlError } from "../../Types/customTypes";
-
-class LoginError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "LoginError";
-  }
-}
-
-export function isSqlError(error: unknown): error is SqlError {
-  return (error as SqlError).code !== undefined;
-}
+import { isSqlError, SqlError, LoginError } from "../../Types/customTypes";
 
 class User {
   public static hashPassword: (password: string) => Promise<string> = async (
