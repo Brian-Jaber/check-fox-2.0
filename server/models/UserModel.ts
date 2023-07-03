@@ -11,7 +11,7 @@ class LoginError extends Error {
   }
 }
 
-function isSqlError(error: unknown): error is SqlError {
+export function isSqlError(error: unknown): error is SqlError {
   return (error as SqlError).code !== undefined;
 }
 
@@ -71,7 +71,6 @@ class User {
   ) => Promise<void> = async (email, first_name, last_name, password) => {
     try {
       const hashedPassword = await User.hashPassword(password);
-      console.log("hello from UserModel");
       await db.query(
         "INSERT INTO Users (email, first_name, last_name, hashed_password) VALUES (?,?,?,?)",
         [email, first_name, last_name, hashedPassword]
@@ -91,6 +90,11 @@ class User {
         throw genericError;
       }
     }
+  };
+
+  static deleteUser: (email: string) => Promise<void> = async (email) => {
+    await db.query("DELETE FROM Users WHERE email = ?", [email]);
+    console.log(`${email} has been deleted`);
   };
 }
 
