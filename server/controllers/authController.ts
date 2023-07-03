@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-
-import User, { isSqlError } from "../models/UserModel";
+import User from "../models/UserModel";
+import { isSqlError } from "../../Types/customTypes";
 
 export async function register(req: Request, res: Response) {
   const { email, first_name, last_name, password } = req.body;
