@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import authRouter from "./routes/authRoutes";
 
-import { LoginError } from "../utilities/passwordUtils/loginUser";
+import { LoginError } from "../Types/customTypes";
 
 dotenv.config();
 
